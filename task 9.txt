@@ -1,0 +1,57 @@
+
+<script>
+    const itemsPerPage = 10;
+    const dataUrl = https://gist.github.com/rvsp/add40254aa126f045837fa5b51f47f1f
+    let currentpages = 1;
+    let currentData = [];
+
+    function fetchData() {
+        fetch(dataUrl)
+            .then(response => response.json())
+            .then(data => {
+                currentData = data;
+                displayData();
+            });
+    }
+
+    function displayData() {
+        const list = document.getElementById('list');
+        const pagination = document.getElementById('pagination');
+
+        list.innerHTML = '';
+        pagination.innerHTML = '';
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedData = currentData.slice(startIndex, endIndex);
+
+        paginatedData.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item.title;
+            list.appendChild(li);
+        });
+
+        const totalPages = Math.ceil(currentData.length / itemsPerPage);
+        for (let i = 1; i <= totalPages; i++) {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" onclick="changePage(${i})">${i}</a>`;
+            if (i === currentPage) {
+                li.classList.add('active');
+            }
+            pagination.appendChild(li);
+        }
+    }
+
+    function changePage(page) {
+        currentPage = page;
+        displayData();
+    }
+
+    fetchData();
+</script>
+</body>
+</html>
+
+    <script src="script.js"></script>
+</body>
+</html>
